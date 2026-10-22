@@ -171,7 +171,7 @@ function LoginForm() {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full mt-2 py-3 px-4 rounded-xl bg-[#185334] hover:bg-[#124229] disabled:bg-slate-300 text-white font-semibold text-sm shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed"
+            className="w-full mt-2 py-3.5 px-6 rounded-full bg-[#185334] hover:bg-[#124229] disabled:bg-slate-300 text-white font-semibold text-sm shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 cursor-pointer disabled:cursor-not-allowed hover:scale-[1.01] active:scale-[0.99]"
           >
             {isLoading ? (
               <>
@@ -191,7 +191,7 @@ function LoginForm() {
         <div className="mt-6 pt-5 border-t border-slate-100 text-center">
           <Link
             href="/"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#185334] transition-colors"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-[#185334] px-4 py-2 rounded-full hover:bg-slate-50 transition-colors"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Kembali ke Website Publik</span>

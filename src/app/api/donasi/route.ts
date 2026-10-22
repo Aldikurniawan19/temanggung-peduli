@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import * as donasiService from "@/services/donasi-service";
 
 export async function GET(request: NextRequest) {
@@ -49,6 +50,15 @@ export async function POST(request: NextRequest) {
     }
 
     const result = await donasiService.createDirectDonation(validationResult.data);
+
+    try {
+      revalidatePath("/");
+      revalidatePath("/donasi");
+      revalidatePath("/admin/donasi");
+      revalidatePath("/admin");
+    } catch {
+      // Revalidation fallback
+    }
 
     return NextResponse.json(
       {

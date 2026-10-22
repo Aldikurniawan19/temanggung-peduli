@@ -1,7 +1,6 @@
 "use client";
-
 import React, { useState, useEffect } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Heart, User, Mail, MessageSquare, EyeOff, ShieldCheck, Check } from "lucide-react";
 import { SITE_CONFIG } from "@/constants/site-config";
 import { formatRupiah } from "@/lib/formatter";
@@ -10,9 +9,9 @@ import { Button } from "@/components/ui/Button";
 import { Input, Textarea } from "@/components/ui/Input";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/Card";
 import { PaymentStatusModal } from "@/features/payment/MidtransSnap";
-import type { MidtransResult } from "@/types/midtrans";
 
 export function DonationForm() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const [selectedPreset, setSelectedPreset] = useState<number | null>(50000);
   const [customAmount, setCustomAmount] = useState<string>("50000");
@@ -99,7 +98,8 @@ export function DonationForm() {
     setIsLoading(true);
 
     try {
-      const res = await fetch("/api/payment", {
+      // Simpan donasi langsung dan tuntas ke basis data Supabase
+      const res = await fetch("/api/donasi", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(validation.data),
@@ -108,80 +108,33 @@ export function DonationForm() {
       const json = await res.json();
 
       if (!res.ok || !json.success) {
-        throw new Error(json.error || "Gagal memproses donasi");
+        throw new Error(json.error || "Gagal memproses dan menyimpan donasi");
       }
 
-      const { snapToken, orderId, redirectUrl } = json.data;
+      setStatusModal({
+        isOpen: true,
+        status: "success",
+        orderId: json.data?.orderId,
+        amount: amountNum,
+      });
 
-      // Jika window.snap ada (Midtrans script ter-load) dan token bukan mock/sandbox
-      if (
-        typeof window !== "undefined" &&
-        window.snap &&
-        snapToken &&
-        !snapToken.startsWith("mock-") &&
-        !snapToken.startsWith("sandbox-token-")
-      ) {
-        window.snap.pay(snapToken, {
-          onSuccess: (result: MidtransResult) => {
-            setStatusModal({
-              isOpen: true,
-              status: "success",
-              orderId: result.order_id,
-              amount: amountNum,
-            });
-            resetForm();
-          },
-          onPending: (result: MidtransResult) => {
-            setStatusModal({
-              isOpen: true,
-              status: "pending",
-              orderId: result.order_id,
-              amount: amountNum,
-            });
-            resetForm();
-          },
-          onError: () => {
-            setStatusModal({
-              isOpen: true,
-              status: "error",
-              orderId,
-            });
-          },
-          onClose: () => {
-            setIsLoading(false);
-          },
-        });
-      } else {
-        // Simpan donasi langsung ke database Supabase (terverifikasi langsung)
-        const directRes = await fetch("/api/donasi", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(validation.data),
-        });
-        const directJson = await directRes.json();
-        const finalOrderId = directJson.data?.orderId || orderId;
-
-        setStatusModal({
-          isOpen: true,
-          status: "success",
-          orderId: finalOrderId,
-          amount: amountNum,
-        });
-        resetForm();
-      }
+      resetForm();
     } catch (err: any) {
-      setErrors({ form: err.message || "Terjadi kesalahan saat memproses pembayaran" });
+      setErrors({ form: err.message || "Terjadi kesalahan saat memproses donasi" });
     } finally {
       setIsLoading(false);
     }
   };
 
   const resetForm = () => {
+    setSelectedPreset(50000);
+    setCustomAmount("50000");
     setDonorName("");
     setDonorEmail("");
     setMessage("");
     setIsAnonymous(false);
     setErrors({});
+    router.refresh();
   };
 
   return (
@@ -346,7 +299,10 @@ export function DonationForm() {
       {/* Modal Status Transaksi */}
       <PaymentStatusModal
         isOpen={statusModal.isOpen}
-        onClose={() => setStatusModal((prev) => ({ ...prev, isOpen: false }))}
+        onClose={() => {
+          setStatusModal((prev) => ({ ...prev, isOpen: false }));
+          resetForm();
+        }}
         status={statusModal.status}
         orderId={statusModal.orderId}
         amount={statusModal.amount}

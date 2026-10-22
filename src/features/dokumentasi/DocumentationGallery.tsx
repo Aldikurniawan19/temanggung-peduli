@@ -153,6 +153,7 @@ export function DocumentationGallery({ initialItems }: DocumentationGalleryProps
                   src={activeItem.imageUrl}
                   alt={activeItem.title}
                   fill
+                  unoptimized={activeItem.imageUrl.startsWith("data:")}
                   sizes="(max-width: 1200px) 100vw, 850px"
                   className="object-contain"
                 />

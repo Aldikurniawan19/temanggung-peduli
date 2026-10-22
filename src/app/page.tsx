@@ -228,6 +228,7 @@ export default async function HomePage() {
                       src={item.imageUrl}
                       alt={item.title}
                       fill
+                      unoptimized={item.imageUrl.startsWith("data:")}
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
                       sizes="(max-width: 768px) 100vw, 33vw"
                     />

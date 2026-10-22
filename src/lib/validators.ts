@@ -58,7 +58,15 @@ export const documentationFormSchema = z.object({
   }),
   imageUrl: z
     .string()
-    .url({ message: "URL gambar harus berupa tautan URL yang valid" }),
+    .min(1, { message: "Gambar kegiatan wajib diisi" })
+    .refine(
+      (val) =>
+        val.startsWith("http://") ||
+        val.startsWith("https://") ||
+        val.startsWith("data:image/") ||
+        val.startsWith("/"),
+      { message: "Format gambar harus berupa URL atau data gambar yang valid" }
+    ),
   eventDate: z.string().min(1, { message: "Tanggal kegiatan wajib diisi" }),
 });
 

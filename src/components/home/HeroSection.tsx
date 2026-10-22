@@ -68,8 +68,6 @@ export function HeroSection({
             transition={{ duration: 0.6, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FEE2E2] text-[#B91C1C] text-xs font-semibold mb-4 shadow-xs"
           >
-            <Flame className="w-3.5 h-3.5 text-red-600 fill-red-600" />
-            <span>Donasi untuk Penanggulangan Karhutla</span>
           </motion.div>
 
           {/* Headline H1 */}

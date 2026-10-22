@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prayerFormSchema } from "@/lib/validators";
 import * as ucapanService from "@/services/ucapan-service";
 
@@ -43,6 +44,13 @@ export async function POST(request: NextRequest) {
     }
 
     const prayer = await ucapanService.submitPrayer(validationResult.data);
+
+    try {
+      revalidatePath("/ucapan");
+      revalidatePath("/");
+    } catch {
+      // Revalidation fallback
+    }
 
     return NextResponse.json(
       {

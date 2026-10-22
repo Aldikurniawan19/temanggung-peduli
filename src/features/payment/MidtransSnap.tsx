@@ -18,11 +18,19 @@ export interface MidtransSnapProps {
 export function MidtransSnap() {
   const [isScriptLoaded, setIsScriptLoaded] = useState(false);
 
+  const isRealKey =
+    Boolean(MIDTRANS_CONFIG.clientKey) &&
+    !MIDTRANS_CONFIG.clientKey.includes("placeholder");
+
   useEffect(() => {
     if (typeof window !== "undefined" && window.snap) {
       setIsScriptLoaded(true);
     }
   }, []);
+
+  if (!isRealKey) {
+    return null;
+  }
 
   return (
     <Script

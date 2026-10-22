@@ -240,7 +240,7 @@ export default function AdminUcapanPage() {
           <button
             type="button"
             onClick={() => setFilter("all")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
               filter === "all"
                 ? "bg-[#185334] text-white shadow-xs"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
@@ -251,7 +251,7 @@ export default function AdminUcapanPage() {
           <button
             type="button"
             onClick={() => setFilter("pending")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
               filter === "pending"
                 ? "bg-amber-600 text-white shadow-xs"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
@@ -262,7 +262,7 @@ export default function AdminUcapanPage() {
           <button
             type="button"
             onClick={() => setFilter("approved")}
-            className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+            className={`px-4 py-1.5 rounded-full text-xs font-semibold transition-all ${
               filter === "approved"
                 ? "bg-[#185334] text-white shadow-xs"
                 : "bg-slate-100 text-slate-600 hover:bg-slate-200"
@@ -332,7 +332,7 @@ export default function AdminUcapanPage() {
                   <button
                     type="button"
                     onClick={() => handleSetApproval(prayer.id, true)}
-                    className="px-3 py-1.5 rounded-xl bg-[#185334] hover:bg-[#124229] text-white text-xs font-semibold flex items-center gap-1.5 shadow-2xs transition-colors"
+                    className="px-4 py-1.5 rounded-full bg-[#185334] hover:bg-[#124229] text-white text-xs font-semibold flex items-center gap-1.5 shadow-2xs hover:shadow-xs transition-all hover:scale-[1.02] active:scale-[0.98]"
                   >
                     <Check className="w-3.5 h-3.5" />
                     <span>Setujui</span>
@@ -341,7 +341,7 @@ export default function AdminUcapanPage() {
                   <button
                     type="button"
                     onClick={() => handleSetApproval(prayer.id, false)}
-                    className="px-3 py-1.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-colors"
+                    className="px-4 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold flex items-center gap-1.5 transition-all"
                   >
                     <X className="w-3.5 h-3.5 text-slate-400" />
                     <span>Sembunyikan</span>
@@ -351,7 +351,7 @@ export default function AdminUcapanPage() {
                 <button
                   type="button"
                   onClick={() => setDeleteTargetId(prayer.id)}
-                  className="p-1.5 rounded-xl text-slate-400 hover:text-red-700 hover:bg-red-50 transition-colors"
+                  className="p-1.5 rounded-full text-slate-400 hover:text-red-700 hover:bg-red-50 transition-colors"
                   title="Hapus Pesan"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -378,7 +378,7 @@ export default function AdminUcapanPage() {
               <button
                 type="button"
                 onClick={() => setShowAddModal(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-700 hover:bg-slate-100"
+                className="p-1.5 rounded-full text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>

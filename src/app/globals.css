@@ -27,3 +27,88 @@ h1, h2, h3, h4, h5, h6 {
     scroll-behavior: auto !important;
   }
 }
+
+/* Water Wave Gauge Animations */
+@keyframes waterWaveFront {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes waterWaveBack {
+  0% {
+    transform: translateX(-50%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes bubbleRise1 {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.6);
+    opacity: 0;
+  }
+  35% {
+    opacity: 0.85;
+    transform: translateY(-8px) translateX(1px) scale(0.9);
+  }
+  100% {
+    transform: translateY(-24px) translateX(-2px) scale(1.1);
+    opacity: 0;
+  }
+}
+
+@keyframes bubbleRise2 {
+  0% {
+    transform: translateY(0) translateX(0) scale(0.5);
+    opacity: 0;
+  }
+  45% {
+    opacity: 0.8;
+    transform: translateY(-9px) translateX(-1.5px) scale(0.95);
+  }
+  100% {
+    transform: translateY(-22px) translateX(1.5px) scale(1.2);
+    opacity: 0;
+  }
+}
+
+@keyframes bubbleRise3 {
+  0% {
+    transform: translateY(0) scale(0.4);
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.75;
+    transform: translateY(-12px) scale(0.85);
+  }
+  100% {
+    transform: translateY(-26px) scale(1.15);
+    opacity: 0;
+  }
+}
+
+.animate-water-wave-front {
+  animation: waterWaveFront 2.4s linear infinite;
+}
+
+.animate-water-wave-back {
+  animation: waterWaveBack 3.7s linear infinite;
+}
+
+.animate-bubble-1 {
+  animation: bubbleRise1 2.6s ease-in infinite;
+}
+
+.animate-bubble-2 {
+  animation: bubbleRise2 3.2s ease-in 1.1s infinite;
+}
+
+.animate-bubble-3 {
+  animation: bubbleRise3 2.9s ease-in 0.5s infinite;
+}
+

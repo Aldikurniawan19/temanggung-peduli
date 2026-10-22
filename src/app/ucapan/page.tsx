@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     "Kumpulan doa tulus dan kata penyemangat dari masyarakat Temanggung untuk para relawan dan warga terdampak karhutla di Kalimantan.",
 };
 
-export const revalidate = 30;
+export const dynamic = "force-dynamic";
 
 export default async function UcapanPage() {
   let prayers: PrayerPublic[] = [

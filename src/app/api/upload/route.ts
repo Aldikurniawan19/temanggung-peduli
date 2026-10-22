@@ -1,7 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { uploadToSupabaseStorage } from "@/lib/supabase";
-import fs from "fs/promises";
-import path from "path";
 
 const ALLOWED_MIME_TYPES = [
   "image/jpeg",
@@ -10,7 +7,7 @@ const ALLOWED_MIME_TYPES = [
   "image/avif",
   "image/gif",
 ];
-const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
 
 export async function POST(request: NextRequest) {
   try {
@@ -38,7 +35,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          error: "Ukuran file terlalu besar. Maksimal ukuran gambar adalah 5 MB.",
+          error: "Ukuran file terlalu besar. Maksimal ukuran gambar adalah 10 MB.",
         },
         { status: 400 }
       );
@@ -47,46 +44,18 @@ export async function POST(request: NextRequest) {
     const arrayBuffer = await file.arrayBuffer();
     const buffer = Buffer.from(arrayBuffer);
 
-    // 1. Coba upload langsung ke Supabase Storage (Bucket: 'dokumentasi')
-    const supabaseResult = await uploadToSupabaseStorage(
-      buffer,
-      file.name,
-      file.type,
-      "dokumentasi"
-    );
-
-    if (supabaseResult.url && !supabaseResult.error) {
-      return NextResponse.json({
-        success: true,
-        data: {
-          url: supabaseResult.url,
-          storage: "supabase",
-          path: supabaseResult.path,
-        },
-      });
-    }
-
-    // 2. Fallback: Jika Supabase bucket belum disetup / key anon belum diinput,
-    // simpan ke public/uploads agar alur admin tetap berjalan mulus
-    const uploadsDir = path.join(process.cwd(), "public", "uploads");
-    await fs.mkdir(uploadsDir, { recursive: true });
-
-    const cleanExt = file.name.split(".").pop() || "jpg";
-    const filename = `${Date.now()}-${Math.random().toString(36).substring(2, 8)}.${cleanExt}`;
-    const filePath = path.join(uploadsDir, filename);
-
-    await fs.writeFile(filePath, buffer);
-
-    const publicUrl = `/uploads/${filename}`;
+    // Konversi buffer gambar langsung ke Base64 Data URL
+    // Gambar disimpan langsung ke tabel database Supabase (bukan ke filesystem project)
+    const mimeType = file.type || "image/jpeg";
+    const base64Data = buffer.toString("base64");
+    const dataUrl = `data:${mimeType};base64,${base64Data}`;
 
     return NextResponse.json({
       success: true,
       data: {
-        url: publicUrl,
-        storage: "local-fallback",
-        note: supabaseResult.error
-          ? `Disimpan sementara ke lokal karena: ${supabaseResult.error}`
-          : undefined,
+        url: dataUrl,
+        storage: "database-table",
+        size: file.size,
       },
     });
   } catch (error: any) {
@@ -94,7 +63,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: error.message || "Gagal mengunggah gambar. Silakan coba lagi.",
+        error: error.message || "Gagal memproses gambar. Silakan coba lagi.",
       },
       { status: 500 }
     );
