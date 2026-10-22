@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Donation {
+  id           String        @id @default(cuid())
+  donorName    String
+  donorEmail   String?
+  isAnonymous  Boolean       @default(false)
+  amount       Int
+  message      String?
+  isVerified   Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  transaction  Transaction?
+
+  @@index([isVerified])
+  @@index([createdAt])
+}
+
+model Transaction {
+  id              String    @id @default(cuid())
+  orderId         String    @unique
+  donationId      String    @unique
+  snapToken       String?
+  status          String    @default("pending")
+  paymentType     String?
+  transactionTime DateTime?
+  grossAmount     Int
+  rawResponse     String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  donation        Donation  @relation(fields: [donationId], references: [id])
+
+  @@index([status])
+  @@index([orderId])
+}
+
+model Prayer {
+  id         String   @id @default(cuid())
+  name       String
+  message    String
+  isApproved Boolean  @default(true)
+  createdAt  DateTime @default(now())
+
+  @@index([isApproved, createdAt])
+}
+
+model Documentation {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  type        String
+  imageUrl    String
+  eventDate   DateTime
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([type])
+  @@index([eventDate])
+}

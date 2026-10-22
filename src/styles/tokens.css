@@ -1,0 +1,52 @@
+:root {
+  /* Warna Dasar & Teks */
+  --color-background: #FAFAF8;
+  --color-foreground: #1A1A1A;
+
+  /* Warna Brand & Interaksi */
+  --color-primary: #1D6B3F;
+  --color-primary-hover: #165632;
+  --color-primary-light: #EBF5EF;
+
+  --color-secondary: #6B7280;
+  --color-secondary-light: #F3F4F6;
+
+  --color-accent: #D97706;
+  --color-accent-hover: #B45309;
+  --color-accent-light: #FEF3C7;
+
+  /* Warna Status */
+  --color-danger: #B91C1C;
+  --color-danger-light: #FEE2E2;
+  --color-success: #15803D;
+  --color-success-light: #DCFCE7;
+
+  /* UI Surface & Border */
+  --color-card: #FFFFFF;
+  --color-border: #E5E7EB;
+  --color-muted: #9CA3AF;
+  --color-footer-bg: #D6ECE0;
+  --color-footer-border: #B7DFC4;
+
+  /* Tipografi */
+  --font-display: 'Plus Jakarta Sans', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Skala Tipografi Konsisten */
+  --text-xs: 0.75rem;     /* 12px */
+  --text-sm: 0.875rem;    /* 14px */
+  --text-base: 1rem;      /* 16px */
+  --text-lg: 1.25rem;     /* 20px */
+  --text-xl: 1.5rem;      /* 24px */
+  --text-2xl: 2rem;       /* 32px */
+  --text-3xl: 3rem;       /* 48px */
+
+  /* Radius Konsisten */
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-full: 9999px;
+
+  /* Focus Ring */
+  --focus-ring: 0 0 0 3px rgba(29, 107, 63, 0.25);
+}
