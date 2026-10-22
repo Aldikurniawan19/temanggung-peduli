@@ -84,6 +84,10 @@ export function Footer() {
             <Link href="/dokumentasi" className="hover:text-[var(--color-primary)]">
               Laporan Penyaluran
             </Link>
+            <span>•</span>
+            <Link href="/admin/login" className="hover:text-[var(--color-primary)] font-medium">
+              Login Admin
+            </Link>
           </div>
         </div>
       </MotionFadeIn>

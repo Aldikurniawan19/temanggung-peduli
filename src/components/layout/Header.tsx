@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence, LayoutGroup } from "motion/react";
-import { TreePine, Menu, X, HandHelping } from "lucide-react";
+import { TreePine, Menu, X, HandHelping, Lock } from "lucide-react";
 import { SITE_CONFIG } from "@/constants/site-config";
 
 export function Header() {
@@ -242,12 +242,21 @@ export function Header() {
           </nav>
         </LayoutGroup>
 
-        {/* CTA Button */}
-        <div className="hidden md:flex items-center gap-3">
+        {/* Actions (Login Admin & CTA Donasi) */}
+        <div className="hidden md:flex items-center gap-2.5">
+          <Link
+            href="/admin/login"
+            className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-full text-xs font-semibold text-slate-600 hover:text-[#185334] hover:bg-[#EBF5EF] border border-slate-200/80 hover:border-[#185334]/30 transition-all"
+            title="Masuk ke Panel Admin"
+          >
+            <Lock className="w-3.5 h-3.5 text-slate-400 group-hover:text-[#185334]" />
+            <span>Login Admin</span>
+          </Link>
+
           <Link href="/donasi">
             <button
               type="button"
-              className="rounded-full bg-[#185334] hover:bg-[#124229] text-white px-5 py-2.5 text-sm font-semibold flex items-center gap-2 shadow-xs transition-all hover:scale-[1.02] active:scale-[0.98]"
+              className="rounded-full bg-[#185334] hover:bg-[#124229] text-white px-5 py-2.5 text-sm font-semibold flex items-center gap-2 shadow-xs transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
             >
               <HandHelping className="w-4 h-4" />
               <span>Donasi Sekarang</span>
@@ -297,11 +306,23 @@ export function Header() {
               );
             })}
 
-            <div className="pt-3">
+            {/* Menu Login Admin Mobile */}
+            <div className="pt-2 border-t border-slate-100 mt-2">
+              <Link
+                href="/admin/login"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="flex items-center gap-2.5 px-3.5 py-2.5 rounded-xl text-sm font-semibold text-slate-600 hover:text-[#185334] hover:bg-[#EBF5EF]/60 transition-colors"
+              >
+                <Lock className="w-4 h-4 text-slate-400" />
+                <span>Login Admin</span>
+              </Link>
+            </div>
+
+            <div className="pt-2">
               <Link href="/donasi" onClick={() => setIsMobileMenuOpen(false)}>
                 <button
                   type="button"
-                  className="w-full rounded-full bg-[#185334] hover:bg-[#124229] text-white py-3 text-sm font-semibold flex items-center justify-center gap-2 shadow-xs"
+                  className="w-full rounded-full bg-[#185334] hover:bg-[#124229] text-white py-3 text-sm font-semibold flex items-center justify-center gap-2 shadow-xs cursor-pointer"
                 >
                   <HandHelping className="w-4 h-4" />
                   <span>Donasi Sekarang</span>

@@ -29,7 +29,16 @@ export async function GET(request: NextRequest) {
 export async function PATCH(request: NextRequest) {
   try {
     const body = await request.json();
-    const { id, isApproved } = body;
+    const { id, isApproved, action } = body;
+
+    if (action === "approve_all_pending") {
+      const result = await ucapanService.approveAllPendingPrayers();
+      return NextResponse.json({
+        success: true,
+        data: result,
+        message: `${result.count} doa yang menunggu berhasil disetujui sekaligus`,
+      });
+    }
 
     if (!id || typeof isApproved !== "boolean") {
       return NextResponse.json(
@@ -49,6 +58,36 @@ export async function PATCH(request: NextRequest) {
     console.error("[API /api/admin/ucapan PATCH] Error:", error);
     return NextResponse.json(
       { success: false, error: "Gagal memperbarui status doa" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { prayerFormSchema } = await import("@/lib/validators");
+    const validation = prayerFormSchema.safeParse(body);
+
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]?.message || "Data doa tidak valid";
+      return NextResponse.json({ success: false, error: firstError }, { status: 400 });
+    }
+
+    const created = await ucapanService.submitPrayer(validation.data);
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: created,
+        message: "Doa dan pesan berhasil ditambahkan",
+      },
+      { status: 201 }
+    );
+  } catch (error: any) {
+    console.error("[API /api/admin/ucapan POST] Error:", error);
+    return NextResponse.json(
+      { success: false, error: error.message || "Gagal menambahkan doa" },
       { status: 500 }
     );
   }

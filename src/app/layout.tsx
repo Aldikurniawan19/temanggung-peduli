@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { Plus_Jakarta_Sans, Inter } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/layout/Header";
-import { Footer } from "@/components/layout/Footer";
+import { AppShell } from "@/components/layout/AppShell";
 import { MidtransSnap } from "@/features/payment/MidtransSnap";
 import { SITE_CONFIG } from "@/constants/site-config";
 
@@ -117,9 +116,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body text-[var(--color-foreground)] bg-[var(--color-background)] min-h-screen flex flex-col antialiased">
-        <Header />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <AppShell>{children}</AppShell>
         <MidtransSnap />
       </body>
     </html>

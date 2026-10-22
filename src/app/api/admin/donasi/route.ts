@@ -49,3 +49,40 @@ export async function PATCH(request: NextRequest) {
     );
   }
 }
+
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { donationFormSchema } = await import("@/lib/validators");
+    const validation = donationFormSchema.safeParse(body);
+
+    if (!validation.success) {
+      const firstError = validation.error.issues[0]?.message || "Data donasi tidak valid";
+      return NextResponse.json({ success: false, error: firstError }, { status: 400 });
+    }
+
+    const randomSuffix = Math.random().toString(36).substring(2, 8).toUpperCase();
+    const orderId = `MANUAL-${Date.now()}-${randomSuffix}`;
+
+    const result = await donasiRepo.createDirectVerifiedDonation({
+      donation: validation.data,
+      orderId,
+    });
+
+    return NextResponse.json(
+      {
+        success: true,
+        data: result,
+        message: "Donasi manual berhasil dicatat dan diverifikasi di Supabase",
+      },
+      { status: 201 }
+    );
+  } catch (error: any) {
+    console.error("[API /api/admin/donasi POST] Error:", error);
+    return NextResponse.json(
+      { success: false, error: error.message || "Gagal mencatat donasi manual" },
+      { status: 500 }
+    );
+  }
+}
+

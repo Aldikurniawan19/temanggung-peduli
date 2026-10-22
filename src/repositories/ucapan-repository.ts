@@ -67,3 +67,11 @@ export async function deletePrayer(id: string) {
     select: { id: true },
   });
 }
+
+export async function approveAllPendingPrayers() {
+  return await prisma.prayer.updateMany({
+    where: { isApproved: false },
+    data: { isApproved: true },
+  });
+}
+

@@ -34,3 +34,8 @@ export async function setPrayerStatus(id: string, isApproved: boolean) {
 export async function deletePrayerById(id: string) {
   return await ucapanRepo.deletePrayer(id);
 }
+
+export async function approveAllPendingPrayers() {
+  return await ucapanRepo.approveAllPendingPrayers();
+}
+
